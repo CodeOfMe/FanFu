@@ -1,0 +1,27 @@
+{
+  "lfm2.5": {
+    "model": "lfm2.5",
+    "config": {
+      "ollama_name": "huihui_ai/lfm2.5-abliterated:latest",
+      "gguf_blob": "sha256-232f69615a92cad2a92dc946c98602c4d1397b4fdd6c40fce713e50e4ed0d3ac",
+      "hf_output": "models/lfm2.5-abliterated-hf",
+      "arch": "lfm2",
+      "hidden_size": 2048,
+      "intermediate_size": 8192,
+      "num_layers": 16,
+      "num_attention_heads": 32,
+      "num_key_value_heads": 8,
+      "head_dim": 64,
+      "rope_theta": 500000,
+      "vocab_size": 65536,
+      "has_vision": false,
+      "has_mtp": false,
+      "has_ssm": false,
+      "has_shortconv": true
+    },
+    "conversion": {
+      "success": false,
+      "error": "index 12 is out of bounds for axis 0 with size 12"
+    }
+  }
+}
