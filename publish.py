@@ -1,91 +1,92 @@
 #!/usr/bin/env python3
-"""Build and publish FanFu to PyPI.
-
-Usage:
-    python publish.py          # Build only
-    python publish.py test     # Build + upload to TestPyPI
-    python publish.py release  # Build + upload to PyPI
-"""
+"""Publish FanFu to PyPI."""
 
 import subprocess
 import sys
-import shutil
+import re
 from pathlib import Path
 
-ROOT = Path(__file__).parent
-DIST = ROOT / "dist"
+
+def bump_version():
+    """Bump patch version."""
+    version_file = Path("fanfu/__init__.py")
+    content = version_file.read_text(encoding="utf-8")
+    match = re.search(r'(__version__\s*=\s*"(\d+\.\d+\.)(\d+)")', content)
+    if not match:
+        print("ERROR: cannot parse version")
+        sys.exit(1)
+
+    old_v = match.group(2) + match.group(3)
+    new_v = match.group(2) + str(int(match.group(3)) + 1)
+    new_content = content.replace(match.group(1), f'__version__ = "{new_v}"')
+    version_file.write_text(new_content, encoding="utf-8")
+    print(f"  Version: {old_v} -> {new_v}")
+    return new_v
 
 
-def run(cmd, **kwargs):
-    print(f"\n>>> {cmd}")
-    result = subprocess.run(cmd, shell=True, **kwargs)
-    if result.returncode != 0:
-        print(f"FAILED (exit {result.returncode})")
-        sys.exit(result.returncode)
-    return result
-
-
-def ensure_tools():
-    for pkg in ("build", "twine"):
-        try:
-            __import__(pkg)
-        except ImportError:
-            print(f"Installing {pkg}...")
-            run(f"{sys.executable} -m pip install {pkg}")
-
-
-def clean():
-    for d in (DIST, ROOT / "build", ROOT / "fanfu.egg-info"):
-        if d.exists():
-            print(f"Removing {d}")
+def clean_builds():
+    """Clean old build artifacts."""
+    import shutil
+    for d in ["dist", "build", "fanfu.egg-info"]:
+        if Path(d).exists():
             shutil.rmtree(d)
+    print("  Cleaned old builds")
 
 
-def build():
-    clean()
-    run(f"{sys.executable} -m build")
-    wheels = list(DIST.glob("*.whl"))
-    tarballs = list(DIST.glob("*.tar.gz"))
-    print(f"\nBuilt: {[f.name for f in wheels + tarballs]}")
+def install_tools():
+    """Install build tools."""
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", "build", "twine", "-q"])
+    print("  Build tools installed")
 
 
-def upload(repository=None):
-    cmd = f"{sys.executable} -m twine upload"
-    if repository:
-        cmd += f" --repository {repository}"
-    cmd += " dist/*"
-    run(cmd)
+def build_package():
+    """Build the package."""
+    subprocess.check_call([sys.executable, "-m", "build"])
+    print("  Package built")
+
+
+def check_package():
+    """Check package metadata."""
+    result = subprocess.run(
+        [sys.executable, "-m", "twine", "check", "dist/*"],
+        capture_output=True, text=True
+    )
+    print(result.stdout)
+    if result.returncode != 0:
+        print("ERROR: Package check failed")
+        print(result.stderr)
+        sys.exit(1)
+
+
+def upload_to_pypi():
+    """Upload to PyPI."""
+    subprocess.check_call([sys.executable, "-m", "twine", "upload", "dist/*"])
+    print("  Uploaded to PyPI")
 
 
 def main():
-    ensure_tools()
+    """Main publish workflow."""
+    print("=== FanFu PyPI Upload ===")
 
-    action = sys.argv[1] if len(sys.argv) > 1 else "build"
+    print("\n[1/6] Bumping patch version...")
+    new_version = bump_version()
 
-    if action == "build":
-        build()
-        print("\nBuild complete. To upload run:")
-        print("  python publish.py test      # TestPyPI")
-        print("  python publish.py release   # PyPI")
+    print("\n[2/6] Cleaning old builds...")
+    clean_builds()
 
-    elif action == "test":
-        build()
-        print("\nUploading to TestPyPI...")
-        upload("testpypi")
-        print("\nDone! Install with:")
-        print("  pip install --index-url https://test.pypi.org/simple/ fanfu")
+    print("\n[3/6] Installing build tools...")
+    install_tools()
 
-    elif action == "release":
-        build()
-        print("\nUploading to PyPI...")
-        upload()
-        print("\nDone! Install with:")
-        print("  pip install fanfu")
+    print("\n[4/6] Building package...")
+    build_package()
 
-    else:
-        print(f"Unknown action: {action}")
-        print("Usage: python publish.py [build|test|release]")
-        sys.exit(1)
+    print("\n[5/6] Checking package...")
+    check_package()
+
+    print("\n[6/6] Uploading to PyPI...")
+    upload_to_pypi()
+
+    print(f"\n=== Done! FanFu v{new_version} published ===")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,64 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.12.12, pytest-9.0.2, pluggy-1.6.0 -- /Users/fred/miniconda3/envs/dev/bin/python3
+cachedir: .pytest_cache
+PySide6 6.10.2 -- Qt runtime 6.10.2 -- Qt compiled 6.10.2
+rootdir: /Users/fred/Documents/GitHub/CodeOfMe/FanFu
+configfile: pyproject.toml
+plugins: anyio-4.12.1, asyncio-1.3.0, qt-4.5.0, Faker-40.11.0, cov-7.0.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 43 items
+
+tests/test_conversion_verification.py::TestQwen35Conversion::test_gguf_tensor_count PASSED [  2%]
+tests/test_conversion_verification.py::TestQwen35Conversion::test_hf_tensor_count PASSED [  4%]
+tests/test_conversion_verification.py::TestQwen35Conversion::test_all_gguf_tensors_mapped PASSED [  6%]
+tests/test_conversion_verification.py::TestQwen35Conversion::test_embed_tokens_shape PASSED [  9%]
+tests/test_conversion_verification.py::TestQwen35Conversion::test_output_norm_shape PASSED [ 11%]
+tests/test_conversion_verification.py::TestQwen35Conversion::test_ffn_layer_weights PASSED [ 13%]
+tests/test_conversion_verification.py::TestQwen35Conversion::test_fused_qkv_split PASSED [ 16%]
+tests/test_conversion_verification.py::TestQwen35Conversion::test_vision_tower_weights PASSED [ 18%]
+tests/test_conversion_verification.py::TestQwen35Conversion::test_mtp_layer_weights PASSED [ 20%]
+tests/test_conversion_verification.py::TestQwen35Conversion::test_ssm_layer_weights PASSED [ 23%]
+tests/test_conversion_verification.py::TestQwen35Conversion::test_all_weights_match PASSED [ 25%]
+tests/test_conversion_verification.py::TestLfm25Conversion::test_gguf_tensor_count PASSED [ 27%]
+tests/test_conversion_verification.py::TestLfm25Conversion::test_hf_tensor_count PASSED [ 30%]
+tests/test_conversion_verification.py::TestLfm25Conversion::test_all_gguf_tensors_mapped PASSED [ 32%]
+tests/test_conversion_verification.py::TestLfm25Conversion::test_embed_tokens_shape PASSED [ 34%]
+tests/test_conversion_verification.py::TestLfm25Conversion::test_output_norm_shape PASSED [ 37%]
+tests/test_conversion_verification.py::TestLfm25Conversion::test_ffn_layer_weights PASSED [ 39%]
+tests/test_conversion_verification.py::TestLfm25Conversion::test_attention_layer_weights PASSED [ 41%]
+tests/test_conversion_verification.py::TestLfm25Conversion::test_shortconv_layer_weights PASSED [ 44%]
+tests/test_conversion_verification.py::TestLfm25Conversion::test_all_weights_match PASSED [ 46%]
+tests/test_core.py::TestConstants::test_app_name PASSED                  [ 48%]
+tests/test_core.py::TestConstants::test_app_version PASSED               [ 51%]
+tests/test_core.py::TestConstants::test_supported_quant_types PASSED     [ 53%]
+tests/test_core.py::TestErrors::test_fanfu_error PASSED                  [ 55%]
+tests/test_core.py::TestErrors::test_conversion_error PASSED             [ 58%]
+tests/test_core.py::TestErrors::test_validation_error PASSED             [ 60%]
+tests/test_core.py::TestErrors::test_file_error PASSED                   [ 62%]
+tests/test_core.py::TestErrors::test_quantization_error PASSED           [ 65%]
+tests/test_core.py::TestErrors::test_architecture_error PASSED           [ 67%]
+tests/test_core.py::TestToolResult::test_success PASSED                  [ 69%]
+tests/test_core.py::TestToolResult::test_failure PASSED                  [ 72%]
+tests/test_core.py::TestMapping::test_embed_tokens PASSED                [ 74%]
+tests/test_core.py::TestMapping::test_lm_head PASSED                     [ 76%]
+tests/test_core.py::TestMapping::test_layer_norm PASSED                  [ 79%]
+tests/test_core.py::TestMapping::test_mlp PASSED                         [ 81%]
+tests/test_core.py::TestMapping::test_attention PASSED                   [ 83%]
+tests/test_core.py::TestMapping::test_mamba PASSED                       [ 86%]
+tests/test_core.py::TestMapping::test_unknown PASSED                     [ 88%]
+tests/test_core.py::TestDequantize::test_q8_0_roundtrip PASSED           [ 90%]
+tests/test_core.py::TestCompareWeights::test_compare_identical_arrays PASSED [ 93%]
+tests/test_core.py::TestCompareWeights::test_compare_nonexistent_gguf PASSED [ 95%]
+tests/test_core.py::TestCLI::test_cli_import PASSED                      [ 97%]
+tests/test_core.py::TestCLI::test_cli_has_subcommands PASSED             [100%]
+
+=============================== warnings summary ===============================
+tests/test_conversion_verification.py::TestQwen35Conversion::test_gguf_tensor_count
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+tests/test_conversion_verification.py::TestQwen35Conversion::test_gguf_tensor_count
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+================== 43 passed, 2 warnings in 71.29s (0:01:11) ===================
+sys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

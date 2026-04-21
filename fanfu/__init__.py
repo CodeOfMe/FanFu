@@ -1,6 +1,6 @@
 """FanFu - Bidirectional GGUF/HuggingFace converter with weight verification."""
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 from .result import ToolResult
 from .api import convert_gguf_to_hf, convert_hf_to_gguf, compare_weights
@@ -10,8 +10,8 @@ from .errors import (
     ValidationError,
     FileError,
     QuantizationError,
+    ArchitectureError,
 )
-from .constants import APP_NAME, APP_VERSION, SUPPORTED_QUANT_TYPES
 
 __all__ = [
     "__version__",
@@ -27,4 +27,5 @@ __all__ = [
     "ValidationError",
     "FileError",
     "QuantizationError",
+    "ArchitectureError",
 ]

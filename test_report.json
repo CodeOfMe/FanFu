@@ -1,46 +1,89 @@
 {
-  "summary": {
+  "project": "FanFu",
+  "description": "Bidirectional GGUF/HuggingFace converter with weight verification",
+  "version": "0.1.0",
+  "test_summary": {
     "total_tests": 43,
     "passed": 43,
     "failed": 0,
-    "status": "ALL TESTS PASSED"
+    "pass_rate": "100%",
+    "execution_time": "76.26s"
   },
-  "models": {
+  "models_tested": {
     "qwen3.5-abliterated-0.8B": {
       "ollama_name": "huihui_ai/qwen3.5-abliterated:0.8B",
-      "gguf_blob": "sha256-c04e57114409a84843ed37427be24ea278d5f74f35790734b9bd5554f237210a",
-      "hf_output": "models/qwen3.5-abliterated-0.8B-hf",
       "gguf_tensors": 536,
       "hf_tensors": 572,
       "weight_match_accuracy": "100.0%",
+      "max_error": "< 1e-3",
+      "file_size": "3.3 GB",
       "features": [
         "fused_qkv_split",
         "vision_tower",
         "mtp_layers",
         "ssm_mamba"
       ],
-      "file_size": "3.3 GB",
       "tests_passed": 10
     },
     "lfm2.5-abliterated": {
       "ollama_name": "huihui_ai/lfm2.5-abliterated:latest",
-      "gguf_blob": "sha256-232f69615a92cad2a92dc946c98602c4d1397b4fdd6c40fce713e50e4ed0d3ac",
-      "hf_output": "models/lfm2.5-abliterated-hf",
       "gguf_tensors": 148,
       "hf_tensors": 148,
       "weight_match_accuracy": "100.0%",
+      "max_error": "< 1e-3",
+      "file_size": "4.4 GB",
       "features": [
         "shortconv_layers",
         "gqa_attention"
       ],
-      "file_size": "4.4 GB",
       "tests_passed": 10
     }
   },
-  "test_categories": {
-    "weight_structure": "All tensor shapes and counts verified",
-    "weight_values": "All weights match within 1e-3 tolerance",
-    "tensor_mapping": "100% GGUF tensors mapped to HF names",
-    "special_features": "QKV splitting, vision tower, MTP, SSM, shortconv all verified"
-  }
+  "test_suites": {
+    "test_core.py": {
+      "tests": 23,
+      "categories": [
+        "Constants",
+        "Errors",
+        "ToolResult",
+        "Mapping",
+        "Dequantize",
+        "Compare",
+        "CLI"
+      ],
+      "status": "ALL PASSED"
+    },
+    "test_conversion_verification.py": {
+      "tests": 20,
+      "categories": [
+        "Qwen35Conversion (10)",
+        "Lfm25Conversion (10)"
+      ],
+      "status": "ALL PASSED"
+    }
+  },
+  "supported_quant_types": [
+    "F32",
+    "F16",
+    "BF16",
+    "Q4_0",
+    "Q4_K",
+    "Q5_K",
+    "Q6_K",
+    "Q8_0",
+    "IQ4_NL",
+    "MXFP4",
+    "NVFP4"
+  ],
+  "diagrams_generated": [
+    "conversion_architecture.png",
+    "test_results_bar.png",
+    "tensor_count_comparison.png",
+    "weight_distribution.png",
+    "quantization_types.png",
+    "test_summary_table.png",
+    "model_comparison.png",
+    "pipeline_flow.png",
+    "error_analysis.png"
+  ]
 }
